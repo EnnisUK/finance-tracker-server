@@ -1,7 +1,7 @@
 require('dotenv').config(); 
 const express = require('express');
 const cors = require('cors');
-const {PrismaClient} = require("@prisma/client/extension");
+import { PrismaClient } from '@prisma/client';
 const prisma = new PrismaClient();
 
 const app = express();
