@@ -13,3 +13,18 @@ datasource db {
   provider = "postgresql"
   url      = env("DATABASE_URL")
 }
+
+enum TransactionType{
+    POSITIVE
+    NEGATIVE
+}
+
+model Transaction {
+id Int @id @default(autoincrement())
+date DateTime // required
+amount Float // required
+type TransactionType // required
+category String // optional
+description String? // optional
+}
+

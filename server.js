@@ -1,6 +1,7 @@
 require('dotenv').config(); 
 const express = require('express');
 const cors = require('cors');
+const prisma = new PrismaClient();
 
 const app = express();
 
@@ -20,18 +21,25 @@ app.get('/', (req, res) => {
 
 // Feature Endpoints
 
-app.get('/Transactions', (req, res) => {
+app.get('/Transactions', async (req, res) => {
     res.send('TODO ACTUALLY GET TRANSACTIONS');
 });
 
-app.post('/Transactions', (req, res) => {
-    res.send('TODO ADD TRANSACTION DATA');
-});
-
-//Transition Endpoints
-
-app.get('/Dashboard', (req, res) => {
-    res.send('TODO MOVE TO PAGE WITH DASHBOARD');
+app.post('/Transaction', async (req, res) => {
+    try
+    {
+        const newTransaction = await prisma.transaction.create({
+            Data: {
+                date: new Date(),
+                amount: req.body.amount,
+                type: req.body.type,
+                category: req.body.category,
+                description: req.body.description,
+            }
+        });
+        res.json(newTransaction);
+    }
+    catch(err) {res.status(404).send({message: 'Failed to create a transaction'});}
 });
 
 app.get('/hello', (req, res) => {
