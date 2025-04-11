@@ -12,7 +12,9 @@
   },
   "scripts": {
     "start": "node server.js",
-    "dev": "nodemon server.js"
+    "dev": "nodemon server.js",
+    "generate": "prisma generate",
+    "build": "npm run generate"
   },
   "devDependencies": {
     "nodemon": "^3.1.9",
