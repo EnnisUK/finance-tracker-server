@@ -31,7 +31,7 @@ app.get('/Dashboard', (req, res) => {
 });
 
 app.get('/hello', (req, res) => {
-    res.json({message: 'HELLO AMAZING WORLD!!!!!!'});
+    res.json({message: 'THIS IS WORKING SO WELL'});
 });
 
 
