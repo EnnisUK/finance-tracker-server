@@ -169,8 +169,8 @@ const config = {
       }
     }
   },
-  "inlineSchema": "// This is your Prisma schema file,\n// learn more about it in the docs: https://pris.ly/d/prisma-schema\n\n// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?\n// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init\n\ngenerator client {\n  provider = \"prisma-client-js\"\n  output   = \"../generated/prisma\"\n}\n\ndatasource db {\n  provider = \"postgresql\"\n  url      = env(\"DATABASE_URL\")\n}\n\nenum TransactionType {\n  POSITIVE\n  NEGATIVE\n}\n\nmodel Transaction {\n  id          Int             @id @default(autoincrement())\n  date        DateTime // required\n  amount      Float // required\n  type        TransactionType // required\n  category    String // optional\n  description String? // optional\n}\n",
-  "inlineSchemaHash": "a7fd87793b90aef18df0fd1db068fd8ee64a619560db05730354bd60068e33e6",
+  "inlineSchema": "// This is your Prisma schema file,\n// learn more about it in the docs: https://pris.ly/d/prisma-schema\n\n// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?\n// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init\n\ngenerator client {\n  provider = \"prisma-client-js\"\n  output   = \"../generated/prisma\"\n}\n\ndatasource db {\n  provider = \"postgresql\"\n  url      = env(\"DATABASE_URL\")\n}\n\nenum TransactionType {\n  POSITIVE\n  NEGATIVE\n}\n\nmodel Transaction {\n  id          Int             @id @default(autoincrement())\n  date        DateTime // required\n  amount      Float // required\n  type        TransactionType // optional\n  category    String // optional\n  description String? // optional\n}\n",
+  "inlineSchemaHash": "ee27b06124e775b8be3e2e0da99c64d77d8202c49db90780e4e69a13f12da1f4",
   "copyEngine": true
 }
 
