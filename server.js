@@ -11,7 +11,11 @@ app.use(express.json());
 
 app.get('/', (req, res) => {
     
-    res.send('Welcome to FinanceTracker');
+   try
+   {
+       res.json({message: 'Welcome to the Finance Tracker!'});
+   }
+   catch(err) {res.status(404).send({message: 'Failed to get the finance tracker'});}
 });
 
 // Feature Endpoints
