@@ -37,19 +37,38 @@ app.get('/', (req, res) => {
 // Feature Endpoints
 
 app.get('/Transactions', async (req, res) => {
+  
+    const {category, startDate, endDate, search} = req.query;
+    
+    let filter = {};
+    
+    if(category){
+        filter.category = category;
+    }
+    
+    if(startDate || endDate){
+        filter.date = {};
+        if(startDate) filter.date.gte = new Date(startDate);
+        if(endDate) filter.date.lte = new Date(endDate);
+    }
+    
+    if(search){
+        filter.OR = [
+            {name: {contains: search, mode: 'insensitive'}},
+            {comment: {contains: search, mode: 'insensitive'}},
+        ];
+    }
+    
     try
     {
         const transactions = await prisma.transaction.findMany({
-            orderBy: {
-                date: 'desc' // or 'asc' if you want oldest first
-            }
+            where: {filter, orderBy: {date: 'desc',},}
         });
-
+        
         res.status(200).json(transactions);
     }
     catch(err) {
-        console.error('❌ Failed to fetch transactions:', err.message);
-        res.status(500).json({ error: 'Failed to fetch transactions' });
+        res.status(404).json({message: 'Failed to fetch transactions'});
     }
 });
 
