@@ -99,7 +99,7 @@ app.post('/Transaction', async (req, res) => {
     }
 });
 
-app.put('/Transaction/:id', async (req, res) => {
+app.put('/UpdateTransaction/:id', async (req, res) => {
     
     const { id } = req.params;
     const {name, amount, date, description, category} = req.body;
