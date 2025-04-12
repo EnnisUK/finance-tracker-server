@@ -99,6 +99,23 @@ app.post('/Transaction', async (req, res) => {
     }
 });
 
+app.put('/Transaction/:id', async (req, res) => {
+    
+    const { id } = req.params;
+    const {name, amount, date, description, category} = req.body;
+   
+    const foundTransaction = await prisma.transaction.findFirst({where: {id: parseInt(id)}});
+    
+    if(!foundTransaction) { return res.status(404).send({message: 'Failed to find a transaction'}); }
+    
+    const updatedTransaction = await prisma.transaction.update({
+        where: {id: parseInt(id)},
+        data: {name, amount: parseInt(amount), date: parseYDM(date), description, category},
+    });
+    
+    res.status(200).json(updatedTransaction);
+})
+
 app.delete('/Transaction/:id', async (req, res) => {
     const { id } = req.params;
     
