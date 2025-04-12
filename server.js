@@ -110,7 +110,7 @@ app.put('/Transaction/:id', async (req, res) => {
     
     const updatedTransaction = await prisma.transaction.update({
         where: {id: parseInt(id)},
-        data: {name, amount: parseInt(amount), date: parseYDM(date), description, category},
+        data: {name, amount: parseInt(amount), date: parseYMD(date), description, category},
     });
     
     res.status(200).json(updatedTransaction);
