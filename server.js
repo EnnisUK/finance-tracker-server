@@ -37,7 +37,20 @@ app.get('/', (req, res) => {
 // Feature Endpoints
 
 app.get('/Transactions', async (req, res) => {
-    res.send('TODO ACTUALLY GET TRANSACTIONS');
+    try
+    {
+        const transactions = await prisma.transaction.findMany({
+            orderBy: {
+                date: 'desc' // or 'asc' if you want oldest first
+            }
+        });
+
+        res.status(200).json(transactions);
+    }
+    catch(err) {
+        console.error('❌ Failed to fetch transactions:', err.message);
+        res.status(500).json({ error: 'Failed to fetch transactions' });
+    }
 });
 
 app.post('/Transaction', async (req, res) => {
