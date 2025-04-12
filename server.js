@@ -37,38 +37,35 @@ app.get('/', (req, res) => {
 // Feature Endpoints
 
 app.get('/Transactions', async (req, res) => {
-  
-    const {category, startDate, endDate, search} = req.query;
-    
-    let filter = {};
-    
-    if(category){
-        filter.category = category;
+    const { category, startDate, endDate, search } = req.query;
+
+    const filters = {};
+
+    if (category) filters.category = category;
+
+    if (startDate || endDate) {
+        filters.date = {};
+        if (startDate) filters.date.gte = new Date(startDate);
+        if (endDate) filters.date.lte = new Date(endDate);
     }
-    
-    if(startDate || endDate){
-        filter.date = {};
-        if(startDate) filter.date.gte = new Date(startDate);
-        if(endDate) filter.date.lte = new Date(endDate);
-    }
-    
-    if(search){
-        filter.OR = [
-            {name: {contains: search, mode: 'insensitive'}},
-            {comment: {contains: search, mode: 'insensitive'}},
+
+    if (search) {
+        filters.OR = [
+            { name: { contains: search, mode: 'insensitive' } },
+            { comment: { contains: search, mode: 'insensitive' } },
         ];
     }
-    
-    try
-    {
+
+    try {
         const transactions = await prisma.transaction.findMany({
-            where: {filter, orderBy: {date: 'desc',},}
+            where: Object.keys(filters).length ? filters : undefined,
+            orderBy: { date: 'desc' },
         });
-        
+
         res.status(200).json(transactions);
-    }
-    catch(err) {
-        res.status(404).json({message: 'Failed to fetch transactions'});
+    } catch (err) {
+        console.error('🔥 GET /transactions error:', err);  // <-- Add this
+        res.status(500).json({ message: 'Failed to fetch transactions' });
     }
 });
 
