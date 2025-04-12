@@ -52,7 +52,7 @@ app.get('/Transactions', async (req, res) => {
     if (search) {
         filters.OR = [
             { name: { contains: search, mode: 'insensitive' } },
-            { comment: { contains: search, mode: 'insensitive' } },
+            { description: { contains: search, mode: 'insensitive' } },
         ];
     }
 
