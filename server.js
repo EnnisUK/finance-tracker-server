@@ -83,10 +83,19 @@ app.post('/Transaction', async (req, res) => {
     }
 });
 
-app.get('/hello', (req, res) => {
-    res.json({message: 'THIS IS WORKING SO WELL'});
-});
-
+app.delete('/Transaction/:id', async (req, res) => {
+    const { id } = req.params;
+    
+    try
+    {
+        await prisma.transaction.delete({where: {id: parseInt(id)}});
+        res.status(200).send({message: 'Transaction deleted'});
+    }
+    catch(err)
+    {
+        res.status(500).json({message: 'Failed to delete transaction'});
+    }
+})
 
 const port = 8000; //process.env.PORT
 
