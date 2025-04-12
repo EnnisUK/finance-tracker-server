@@ -12,7 +12,7 @@ model Transaction {
   name        String @default("Unknown")
   amount      Int
   date        DateTime
-  description String
-  category    String
+  description String?
+  category    String?
 
 }
