@@ -103,17 +103,29 @@ app.put('/UpdateTransaction/:id', async (req, res) => {
     
     const { id } = req.params;
     const {name, amount, date, description, category} = req.body;
-   
-    const foundTransaction = await prisma.transaction.findFirst({where: {id: parseInt(id)}});
     
-    if(!foundTransaction) { return res.status(404).send({message: 'Failed to find a transaction'}); }
-    
-    const updatedTransaction = await prisma.transaction.update({
-        where: {id: parseInt(id)},
-        data: {name, amount: parseInt(amount), date: parseYMD(date), description, category},
-    });
-    
-    res.status(200).json(updatedTransaction);
+    try {
+
+        const foundTransaction = await prisma.transaction.findFirst({where: {id: parseInt(id)}});
+
+        if (!foundTransaction) {
+            return res.status(404).send({message: 'Failed to find a transaction'});
+        }
+
+        const updatedTransaction = await prisma.transaction.update({
+            where: {id: parseInt(id)},
+            data: {
+                ...(name && { name }),
+                ...(amount && { amount: parseInt(amount) }),
+                ...(date && { date: parseYMD(date) }),
+                ...(description && { description }),
+                ...(category && { category }),
+            },
+        });
+
+        res.status(200).json(updatedTransaction);
+    }
+    catch(err) {res.status(500).send({message: 'Failed to update transaction'});}
 })
 
 app.delete('/Transaction/:id', async (req, res) => {
