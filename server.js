@@ -31,9 +31,9 @@ app.post('/Transaction', async (req, res) => {
     try
     {
         const newTransaction = await prisma.transaction.create({
-            Data: {
-                date: new Date(),
-                amount: req.body.amount,
+            data: {
+                date: new Date(req.body.date),
+                amount: parseFloat(req.body.amount),
                 type: req.body.type,
                 category: req.body.category,
                 description: req.body.description,
@@ -41,7 +41,10 @@ app.post('/Transaction', async (req, res) => {
         });
         res.json(newTransaction);
     }
-    catch(err) {res.status(404).send({message: 'Failed to create a transaction'});}
+    catch(err) 
+    {
+        res.status(500).json({ message: 'Failed to create transaction', error: err.message });
+    }
 });
 
 app.get('/hello', (req, res) => {
