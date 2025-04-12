@@ -13,7 +13,7 @@ app.use(express.json());
 //Helper functions
 
 function parseDMY(dateString) {
-    const [day, month, year] = dateString.split('/');
+    const [year, month, day] = dateString.split('/');
     
     if (!day || !month || !year) {
         throw new Error(`Invalid date format: ${dateString}`);
