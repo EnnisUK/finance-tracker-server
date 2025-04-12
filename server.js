@@ -44,11 +44,12 @@ app.post('/Transaction', async (req, res) => {
     {
         const {name, amount, date, description, category} = req.body;
         const parsedDate = parseDMY(date);
+        const parsedAmount = parseFloat(amount);
         
         const newTransaction = await prisma.transaction.create({
             data: {
                 name,
-                amount,
+                amount: parsedAmount,
                 date: parsedDate,
                 description,
                 category,
