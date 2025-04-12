@@ -12,16 +12,17 @@ app.use(express.json());
 
 //Helper functions
 
-function parseDMY(dateString) {
-    const [year, month, day] = dateString.split('/');
-    
-    if (!day || !month || !year) {
-        throw new Error(`Invalid date format: ${dateString}`);
+function parseYMD(dateStr) {
+    // Replace slashes with dashes
+    const isoFormatted = dateStr.replace(/\//g, '-'); // "2025-04-12"
+    const dateObj = new Date(isoFormatted);
+
+    if (isNaN(dateObj)) {
+        throw new Error(`Invalid date: ${dateStr}`);
     }
 
-    return new Date(`${year}-${month}-${day}`);
+    return dateObj;
 }
-
 
 
 app.get('/', (req, res) => {
@@ -43,7 +44,7 @@ app.post('/Transaction', async (req, res) => {
     try
     {
         const {name, amount, date, description, category} = req.body;
-        const parsedDate = parseDMY(date);
+        const parsedDate = parseYMD(date);
         const parsedAmount = parseFloat(amount);
         
         const newTransaction = await prisma.transaction.create({
@@ -55,7 +56,7 @@ app.post('/Transaction', async (req, res) => {
                 category,
             }
         });
-        res.status(201).send(newTransaction);
+        res.json(newTransaction);
     }
     catch(err) 
     {

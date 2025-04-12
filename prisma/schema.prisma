@@ -9,8 +9,10 @@ datasource db {
 
 model Transaction {
   id          Int      @id @default(autoincrement())
+  name        String @default("Unknown")
+  amount      Int
   date        DateTime
-  amount      Float
+  description String
   category    String
-  description String?
+
 }
