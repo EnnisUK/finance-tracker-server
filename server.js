@@ -10,6 +10,18 @@ const app = express();
 app.use(cors());
 app.use(express.json());
 
+//Helper functions
+
+function parseDMY(dateString) {
+    const [day, month, year] = dateString.split('/');
+    
+    if (!day || !month || !year) {
+        throw new Error(`Invalid date format: ${dateString}`);
+    }
+
+    return new Date(`${year}-${month}-${day}`);
+}
+
 
 
 app.get('/', (req, res) => {
@@ -30,16 +42,19 @@ app.get('/Transactions', async (req, res) => {
 app.post('/Transaction', async (req, res) => {
     try
     {
+        const {name, amount, date, description, category} = req.body;
+        const parsedDate = parseDMY(date);
+        
         const newTransaction = await prisma.transaction.create({
             data: {
-                date: new Date(req.body.date),
-                amount: parseFloat(req.body.amount),
-                type: req.body.type,
-                category: req.body.category,
-                description: req.body.description,
+                name,
+                amount,
+                date: parsedDate,
+                description,
+                category,
             }
         });
-        res.json(newTransaction);
+        res.status(201).send(newTransaction);
     }
     catch(err) 
     {
